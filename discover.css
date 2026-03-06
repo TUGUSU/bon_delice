@@ -1,0 +1,912 @@
+/*
+  bon délice - discover.css
+  Энэ файлд вэб хуудасны бүх загварчлалыг хийлээ.
+
+  Бичсэн: tugusu team
+  Огноо: 2026
+
+  Хэрэгжүүлсэн зүйлс:
+  - CSS custom property (color, font, spacing token)
+  - Dark / Light горим (checkbox trick, JS-гүй)
+  - Animation болон transition
+  - Gradient, shadow, border-radius
+  - Inline SVG ашиглалт (HTML дотор)
+  - Grid болон Flexbox layout
+  - Responsive: гар утас (bosoo), гар утас (хэвтээ), компьютер
+  - Монгол текстэд тохирсон typography
+*/
+
+
+/* =====================================================
+   CSS CUSTOM PROPERTIES (Token буюу хувьсагч)
+
+   Бүх өнгө, хэмжээ, фонтыг эндэс хэрэглэнэ.
+   Ингэснээр нэг газраас өөрчлөхөд бүгд өөрчлөгдөнө.
+   Хатуу утга CSS rule дотор бичихгүй байх.
+===================================================== */
+:root {
+
+  /* --- Өнгөнүүд --- */
+  --color-bg:        #ffffff;
+  --color-card:      #f6f7fb;
+  --color-border:    #e5e7eb;
+  --color-text:      #111827;
+  --color-muted:     #6b7280;
+  --color-brand:     #e11d48;
+  --color-chip-bg:   #eef2ff;
+
+  /* gradient - header болон accent-д ашиглана */
+  --color-grad: linear-gradient(
+    135deg,
+    rgba(225, 29, 72, 0.12),
+    rgba(59, 130, 246, 0.12)
+  );
+
+  /* --- Фонт --- */
+  --font-body: "Noto Sans", Arial, sans-serif;
+
+  /* Монгол текст уншихад тохирсон typography утгууд.
+     line-height 1.6 нь монгол үсгийн мөр хоорондын зайг
+     харааны хувьд тохиромжтой болгодог. */
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg:   1.25rem;
+  --font-size-xl:   1.5rem;
+
+  --line-height-body:    1.6;
+  --line-height-heading: 1.3;
+  --letter-spacing-body: 0.01em;
+  --word-spacing-mn:     0.1em;    /* монгол үгийн хоорондын зай */
+
+  /* --- Зай (spacing) --- */
+  --space-xs:  0.4rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+
+  /* --- Border radius --- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-full: 999px;
+
+  /* --- Shadow --- */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.13);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.18);
+
+  /* --- Max width --- */
+  --max-width: 72rem;
+}
+
+
+/* =====================================================
+   DARK MODE
+
+   #theme-toggle checkbox тэмдэглэгдэхэд
+   ~ selector ашиглаад #page доторх
+   custom property-уудыг override хийнэ.
+   Ингэснээр JS ашиглалгүйгээр dark mode ажиллана.
+===================================================== */
+#theme-toggle {
+  /* энэ checkbox харагдахгүй байна, label нь товч болно */
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+#theme-toggle:checked ~ #page {
+  --color-bg:     #0d1117;
+  --color-card:   #161b22;
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-text:   #e6edf3;
+  --color-muted:  #8b949e;
+  --color-chip-bg: rgba(255, 255, 255, 0.07);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.6);
+
+  --color-grad: linear-gradient(
+    135deg,
+    rgba(225, 29, 72, 0.2),
+    rgba(59, 130, 246, 0.15)
+  );
+}
+
+
+/* =====================================================
+   BASE STYLES
+
+   Хамгийн эхлээд бүх элементэд нийтлэг дүрмүүд.
+===================================================== */
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* box-sizing бүх элементэд өвлүүлнэ - энэ их тохиромжтой */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  word-spacing: var(--word-spacing-mn);
+  /* fallback өнгө - CSS variable дэмжихгүй хуучин browser-д зориулсан */
+  background: #ffffff;
+  color: #111827;
+}
+
+/* #page нь dark mode-ийн үндсэн контейнер */
+#page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  /* өнгө шилжилт нь smooth байх */
+  transition: background 300ms ease, color 300ms ease;
+}
+
+/* зургийг responsive болгох */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 0;
+}
+
+/* link-үүдийн нийтлэг загвар */
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* heading typography */
+h1, h2, h3, h4 {
+  color: var(--color-text);
+  line-height: var(--line-height-heading);
+  margin-top: 0;
+}
+
+h1 { font-size: var(--font-size-xl); margin-bottom: var(--space-xs); }
+h2 { font-size: var(--font-size-lg); margin-bottom: var(--space-sm); }
+h3 { font-size: var(--font-size-base); margin-bottom: var(--space-sm); }
+h4 { font-size: var(--font-size-base); margin-bottom: var(--space-xs); }
+
+p {
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+}
+
+
+/* =====================================================
+   UTILITY CLASSES
+===================================================== */
+
+/* screen reader-д харагдана, харин нүдэнд харагдахгүй */
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* max-width container, дунд нь байрлуулна */
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-lg);
+}
+
+
+/* =====================================================
+   SKIP LINK (accessibility)
+
+   Tab дарахад гарч ирнэ, keyboard хэрэглэгчдэд зориулсан.
+===================================================== */
+.skip-link {
+  margin: 0;
+  padding: 0;
+}
+
+.skip-link a {
+  position: absolute;
+  left: -9999px;
+  top: var(--space-sm);
+  background: var(--color-card);
+  color: var(--color-text);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+}
+
+.skip-link a:focus {
+  left: var(--space-md);
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+
+/* =====================================================
+   HEADER
+
+   Gradient background ашиглана.
+   Дотроо flex ашиглаж лого, toggle товч зэрэгцүүлнэ.
+===================================================== */
+#header {
+  background: var(--color-grad);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* лого + toggle хэсэг */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+/* брэнд нэр + лого хажуу тийш байрлана */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo-icon {
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-text h1 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+}
+
+.brand-text p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+/* dark/light toggle товч */
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-sm);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.theme-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* label текстийг dark/light горимоор харуулах */
+.btn-label-dark  { display: none; }
+.btn-label-light { display: inline; }
+
+#theme-toggle:checked ~ #page .btn-label-dark  { display: inline; }
+#theme-toggle:checked ~ #page .btn-label-light { display: none; }
+
+/* навигацийн цэс */
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.nav-list a {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.nav-list a:hover,
+.nav-list a:focus {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+
+/* =====================================================
+   CARD
+
+   Хуудас дотрох үндсэн блокуудын загвар.
+   Animation: доороос дээш гарч ирнэ (fade + slide).
+===================================================== */
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+
+  /* page load-д гарч ирэх animation */
+  animation: slide-up 500ms ease both;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =====================================================
+   БАЙРШИЛ ТЕКСТ
+===================================================== */
+.location-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+}
+
+.location-text strong {
+  color: var(--color-text);
+}
+
+
+/* =====================================================
+   ХАЙЛТЫН ФОРМ
+
+   XHTML strict нь placeholder attribute дэмждэггүй тул
+   .placeholder-text span ашиглаж ижил харагдуулна.
+===================================================== */
+.search-form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+/* dark mode-д search box өнгийг өөрчилнэ */
+#theme-toggle:checked ~ #page .search-box {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: var(--color-muted);
+}
+
+.search-box input[type="text"] {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  padding: 0;
+}
+
+/* fake placeholder текст */
+.placeholder-text {
+  position: absolute;
+  /* search icon (18px) + gap (12px) + padding (12px) = ~42px */
+  left: 42px;
+  color: var(--color-muted);
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+/* input-д фокус орж эсвэл хулганаар hover хийхэд placeholder алга болно */
+.search-box input[type="text"]:focus + .placeholder-text,
+.search-box input[type="text"]:hover + .placeholder-text {
+  opacity: 0;
+}
+
+/* form доторх товч + link эгнээ */
+.form-row {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+
+/* =====================================================
+   ТОВЧ (Button) ЗАГВАРУУД
+
+   input[type="submit"], input[type="reset"], .btn-secondary
+   эдгээр гурав нь ижил base загвартай.
+===================================================== */
+input[type="submit"],
+input[type="reset"],
+.btn-secondary {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+/* үндсэн submit товч улаан background-тай */
+input[type="submit"] {
+  background: var(--color-brand);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:focus,
+input[type="reset"]:hover,
+input[type="reset"]:focus,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+
+/* =====================================================
+   БАННЕР ЗУРАГ
+===================================================== */
+.banner-wrap {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-sm);
+}
+
+/* slider indicator dots */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 200ms ease;
+}
+
+/* dark mode dots */
+#theme-toggle:checked ~ #page .dot {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* идэвхтэй dot нь брэнд өнгөтэй */
+.dot.active {
+  background: var(--color-brand);
+}
+
+
+/* =====================================================
+   АНГИЛЛЫН GRID
+
+   Mobile: 1 багана
+   Tablet+: 2 багана
+   .tile-wide нь 2 баганыг бүтнээр эзэлнэ
+===================================================== */
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.category-tile {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.category-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tile-label {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-grad);
+  font-weight: 600;
+}
+
+.tile-label a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.tile-img {
+  overflow: hidden;
+}
+
+.tile-img img {
+  width: 100%;
+  transition: transform 300ms ease;
+}
+
+.category-tile:hover .tile-img img {
+  transform: scale(1.03);
+}
+
+
+/* =====================================================
+   TAB ЖАГСААЛТ
+===================================================== */
+.tab-list {
+  margin: 0 0 var(--space-md) 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-sm);
+}
+
+.tab-list a {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--color-chip-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.tab-list a:hover,
+.tab-list a:focus {
+  transform: translateY(-1px);
+  background: var(--color-brand);
+  color: #ffffff;
+  border-color: transparent;
+  outline: none;
+}
+
+
+/* =====================================================
+   CHIP ЖАГСААЛТ
+
+   Ангилал болон хайлтын товчнуудын загвар.
+===================================================== */
+.chip-list {
+  margin: 0 0 var(--space-md) 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.chip-list a {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-chip-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.chip-list a:hover,
+.chip-list a:focus {
+  transform: translateY(-1px);
+  background: var(--color-brand);
+  color: #ffffff;
+  border-color: transparent;
+  outline: none;
+}
+
+
+/* =====================================================
+   ШҮҮЛТИЙН ФОРМ
+===================================================== */
+.filter-section {
+  margin-bottom: var(--space-lg);
+}
+
+.filter-section fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: var(--space-md);
+  margin: 0;
+}
+
+/* filter fields flex-ээр зэрэгцнэ */
+.filter-fields {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-sm);
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.filter-field label {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+select {
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+}
+
+
+/* =====================================================
+   РЕСТОРАНЫ ЖАГСААЛТ
+===================================================== */
+.restaurant-block {
+  margin-bottom: var(--space-xl);
+}
+
+.restaurant-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+.restaurant-item {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.restaurant-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.rest-thumb {
+  width: 9rem;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.rest-info h4 {
+  margin-bottom: var(--space-xs);
+  text-transform: capitalize;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.rating-num {
+  font-weight: 700;
+  color: var(--color-brand);
+  font-size: var(--font-size-lg);
+}
+
+.stars {
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+
+.review-count {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.tags {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  word-spacing: 0.15em;
+}
+
+
+/* =====================================================
+   ХАЙЛТ ХУУДАСНЫ CHIP GROUP
+===================================================== */
+.chip-groups {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.chip-group h4 {
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-xs);
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION LINKS
+===================================================== */
+.page-links {
+  margin-top: var(--space-lg);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+.page-links a {
+  color: var(--color-brand);
+}
+
+.page-links a:hover {
+  text-decoration: underline;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+#footer {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-grad);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.footer-inner p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.footer-inner a {
+  color: var(--color-brand);
+}
+
+
+/* =====================================================
+   RESPONSIVE MEDIA QUERIES
+
+   CS142 lecture-д заасан 3 breakpoint:
+   1. гар утас босоо  -> default (mobile-first)
+   2. гар утас хэвтээ -> min-width: 600px
+   3. компьютер       -> min-width: 1024px
+===================================================== */
+
+/* --- 2. Гар утас хэвтээ / жижиг tablet (600px+) --- */
+@media screen and (min-width: 600px) {
+
+  /* ангиллын grid 2 баганатай болно */
+  .category-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* wide tile бүтэн мөрийг эзэлнэ */
+  .tile-wide {
+    grid-column: 1 / -1;
+  }
+
+  /* хайлтын chip groups 2 баганатай */
+  .chip-groups {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* filter fields мөн 2 баганатай */
+  .filter-fields {
+    flex-wrap: nowrap;
+  }
+}
+
+/* --- 3. Компьютерийн дэлгэц (1024px+) --- */
+@media screen and (min-width: 1024px) {
+
+  /* рестораны жагсаалт 2 баганатай болно */
+  .restaurant-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* chip groups 3 баганатай */
+  .chip-groups {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* header font жоохон томруулна */
+  .brand-text h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  /* card padding арай их болно */
+  .card {
+    padding: var(--space-xl) calc(var(--space-xl) * 1.5);
+  }
+}

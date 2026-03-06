@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="mn" lang="mn">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>bon délice - нүүр хуудас</title>
+
+  <!-- SEO мета тагууд -->
+  <meta name="description" content="Bon Délice: байршилд суурилсан ресторан, кафе, паб хайлт. Монгол улсад үйлчилдэг хоол хүргэлтийн платформ." />
+  <meta name="keywords" content="bon délice, ресторан, кафе, паб, хайлт, монгол хоол, Улаанбаатар" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Bon Délice team" />
+
+  <!-- Google Fonts - Noto Sans нь монгол үсгийг дэмждэг -->
+  <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&amp;display=swap" />
+
+  <link rel="stylesheet" href="discover.css" type="text/css" />
+</head>
+
+<body>
+
+  <!-- skip link - accessibility-д зориулсан, tab дарахад харагдана -->
+  <p class="skip-link"><a href="#main-content">үндсэн агуулга руу шилжих</a></p>
+
+  <!--
+    Dark/light toggle арга:
+    Checkbox input нь #page-д суурилсан CSS selector ашиглан
+    dark mode-ийг JS-гүйгээр идэвхжүүлнэ.
+    input нь харагдахгүй байна, харин label нь товчлуур болж харагдана.
+  -->
+  <input type="checkbox" id="theme-toggle" name="theme-toggle" value="1" />
+
+  <div id="page">
+
+    <!-- ====== HEADER ====== -->
+    <div id="header">
+
+      <div class="wrap header-top">
+
+        <!-- лого болон брэнд нэр -->
+        <div class="brand">
+
+          <!-- inline SVG лого - requirement 9 -->
+          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg"
+               width="48" height="48" viewBox="0 0 48 48"
+               role="img" aria-label="bon délice лого">
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#e11d48" />
+                <stop offset="100%" stop-color="#f97316" />
+              </linearGradient>
+            </defs>
+            <circle cx="24" cy="24" r="22" fill="url(#logo-grad)" />
+            <text x="24" y="30" font-family="serif" font-size="20"
+                  text-anchor="middle" fill="#ffffff" font-weight="bold">B</text>
+          </svg>
+
+          <div class="brand-text">
+            <h1>bon délice</h1>
+            <p>байршилд суурилсан хоол хайлт</p>
+          </div>
+        </div>
+
+        <!-- dark/light toggle товч -->
+        <div class="toggle-wrap">
+          <label for="theme-toggle" class="theme-btn">
+            <!-- inline SVG: нарны дүрс - гэрэл горим -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="5" fill="currentColor" />
+              <line x1="12" y1="2" x2="12" y2="5"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="12" y1="19" x2="12" y2="22"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="2" y1="12" x2="5" y2="12"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="19" y1="12" x2="22" y2="12"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="4.9" y1="4.9" x2="7.1" y2="7.1"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="16.9" y1="16.9" x2="19.1" y2="19.1"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="4.9" y1="19.1" x2="7.1" y2="16.9"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="16.9" y1="7.1" x2="19.1" y2="4.9"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span class="btn-label-light">гэрэл</span>
+            <span class="btn-label-dark">харанхуй</span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- навигацийн цэс -->
+      <nav id="main-nav">
+        <div class="wrap">
+          <h2 class="visually-hidden">үндсэн цэс</h2>
+          <ul class="nav-list">
+            <li><a href="#screen-home">нүүр</a></li>
+            <li><a href="#screen-restaurants">ресторан</a></li>
+            <li><a href="#screen-search">хайлт</a></li>
+          </ul>
+        </div>
+      </nav>
+
+    </div>
+    <!-- /HEADER -->
+
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <div id="app">
+      <div id="main-content" class="wrap">
+
+
+        <!-- ==================
+             A) НҮҮР ХУУДАС
+             ================== -->
+        <div id="screen-home" class="card">
+
+          <h2>нүүр</h2>
+
+          <p class="location-text">
+            <!-- location icon inline SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                 viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor"
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75
+                   7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38
+                   0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5
+                   2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+            таны байршил: <strong>bayanzurkh district, 26 street</strong>
+          </p>
+
+          <!-- хайлтын форм -->
+          <form action="#screen-search" method="get" class="search-form">
+            <fieldset>
+              <legend class="visually-hidden">хайлт хийх</legend>
+
+              <div class="search-box">
+                <!-- search icon inline SVG -->
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg"
+                     width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor"
+                    d="M10 2a8 8 0 105.293 14.293l4.707 4.707
+                       1.414-1.414-4.707-4.707A8 8 0 0010 2zm0
+                       2a6 6 0 110 12 6 6 0 010-12z" />
+                </svg>
+                <label for="q-home" class="visually-hidden">хайх үгээ бичнэ үү</label>
+                <input type="text" id="q-home" name="q" value="" />
+                <span class="placeholder-text">ресторан, хоол хайх...</span>
+              </div>
+
+              <div class="form-row">
+                <input type="submit" value="хайх" />
+                <a class="btn-secondary" href="#screen-search">ангилалаар үзэх</a>
+              </div>
+
+            </fieldset>
+          </form>
+
+          <!-- баннер зураг -->
+          <div class="banner-wrap">
+            <img src="assets/img/banner.png"
+                 alt="bon délice промо баннер - шилдэг ресторануудын урамшуулал"
+                 width="900" height="240" />
+          </div>
+
+          <!-- slide indicator dots -->
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+
+          <!-- ангиллын grid -->
+          <h3>ангилал</h3>
+
+          <div class="category-grid">
+
+            <div class="category-tile">
+              <p class="tile-label"><a href="#screen-restaurants">ресторан</a></p>
+              <div class="tile-img">
+                <img src="assets/img/restaurant.png"
+                     alt="ресторан ангилал" width="420" height="220" />
+              </div>
+            </div>
+
+            <div class="category-tile">
+              <p class="tile-label"><a href="#screen-restaurants">кафе</a></p>
+              <div class="tile-img">
+                <img src="assets/img/image.png"
+                     alt="кафе ангилал" width="420" height="220" />
+              </div>
+            </div>
+
+            <!-- wide tile нь grid дотор 2 нүд эзэлнэ -->
+            <div class="category-tile tile-wide">
+              <p class="tile-label"><a href="#screen-restaurants">баар &amp; лоунж</a></p>
+              <div class="tile-img">
+                <img src="assets/img/bar.png"
+                     alt="баар ба лоунж ангилал" width="860" height="220" />
+              </div>
+            </div>
+
+          </div>
+
+          <p class="page-links">
+            <a href="#screen-restaurants">ресторанууд харах</a> |
+            <a href="#screen-search">хайлт</a>
+          </p>
+
+        </div>
+        <!-- /нүүр -->
+
+
+        <!-- ==================
+             B) РЕСТОРАНЫ ЖАГСААЛТ
+             ================== -->
+        <div id="screen-restaurants" class="card">
+
+          <h2>ресторан</h2>
+
+          <!-- tab link - JS байхгүй тул anchor-оор навигац хийнэ -->
+          <ul class="tab-list">
+            <li><a href="#popular-section">түгээмэл</a></li>
+            <li><a href="#new-section">сүүлд нэмэгдсэн</a></li>
+          </ul>
+
+          <!-- cuisine chips -->
+          <ul class="chip-list">
+            <li><a href="#rest-korean">солонгос</a></li>
+            <li><a href="#rest-european">европ</a></li>
+            <li><a href="#rest-chinese">хятад</a></li>
+            <li><a href="#rest-italian">итали</a></li>
+            <li><a href="#rest-mongolian">монгол</a></li>
+          </ul>
+
+          <!-- шүүлтийн форм -->
+          <div class="filter-section">
+            <h3>шүүлт</h3>
+            <form action="#screen-restaurants" method="get">
+              <fieldset>
+                <legend class="visually-hidden">шүүлтийн сонголт</legend>
+
+                <div class="filter-fields">
+
+                  <div class="filter-field">
+                    <label for="f-distance">зай</label>
+                    <select id="f-distance" name="distance">
+                      <option value="1">1 км</option>
+                      <option value="3">3 км</option>
+                      <option value="5">5 км</option>
+                      <option value="10">10 км</option>
+                    </select>
+                  </div>
+
+                  <div class="filter-field">
+                    <label for="f-rating">үнэлгээ</label>
+                    <select id="f-rating" name="minrating">
+                      <option value="any">ялгаагүй</option>
+                      <option value="4">4+</option>
+                      <option value="3">3+</option>
+                    </select>
+                  </div>
+
+                  <div class="filter-field">
+                    <label for="f-open">цагийн хуваарь</label>
+                    <select id="f-open" name="open">
+                      <option value="any">ялгаагүй</option>
+                      <option value="open">нээлттэй</option>
+                      <option value="closed">хаалттай</option>
+                    </select>
+                  </div>
+
+                </div>
+
+                <div class="form-row">
+                  <input type="submit" value="шүүх" />
+                  <input type="reset" value="цэвэрлэх" />
+                </div>
+
+              </fieldset>
+            </form>
+          </div>
+
+          <!-- түгээмэл ресторанууд -->
+          <div id="popular-section" class="restaurant-block">
+            <h3>түгээмэл</h3>
+
+            <div class="restaurant-list">
+
+              <div class="restaurant-item" id="rest-korean">
+                <img class="rest-thumb" src="assets/img/yuna.png"
+                     alt="yuna солонгос ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>yuna</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.3</span>
+                    <span class="stars" aria-label="5 одоос 4.3">★★★★★</span>
+                    <span class="review-count">(86 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#солонгос #ази</p>
+                </div>
+              </div>
+
+              <div class="restaurant-item">
+                <img class="rest-thumb" src="assets/img/seoul.png"
+                     alt="seoul солонгос ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>seoul</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.2</span>
+                    <span class="stars" aria-label="5 одоос 4.2">★★★★☆</span>
+                    <span class="review-count">(86 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#солонгос #ази</p>
+                </div>
+              </div>
+
+              <div class="restaurant-item" id="rest-european">
+                <img class="rest-thumb" src="assets/img/new_york.png"
+                     alt="new york empire европ ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>new york empire</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.1</span>
+                    <span class="stars" aria-label="5 одоос 4.1">★★★★☆</span>
+                    <span class="review-count">(86 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#европ</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- сүүлд нэмэгдсэн ресторанууд -->
+          <div id="new-section" class="restaurant-block">
+            <h3>сүүлд нэмэгдсэн</h3>
+
+            <div class="restaurant-list">
+
+              <div class="restaurant-item">
+                <img class="rest-thumb" src="assets/img/yuna.png"
+                     alt="yuna солонгос ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>yuna</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.3</span>
+                    <span class="stars" aria-label="5 одоос 4.3">★★★★★</span>
+                    <span class="review-count">(86 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#солонгос #ази</p>
+                </div>
+              </div>
+
+              <div class="restaurant-item" id="rest-italian">
+                <img class="rest-thumb" src="assets/img/veranda.png"
+                     alt="veranda итали ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>veranda</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.6</span>
+                    <span class="stars" aria-label="5 одоос 4.6">★★★★★</span>
+                    <span class="review-count">(52 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#итали</p>
+                </div>
+              </div>
+
+              <div class="restaurant-item" id="rest-chinese">
+                <img class="rest-thumb" src="assets/img/tin_tan.png"
+                     alt="tian tian хятад ресторан" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>tian tian</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.0</span>
+                    <span class="stars" aria-label="5 одоос 4.0">★★★★☆</span>
+                    <span class="review-count">(40 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#хятад</p>
+                </div>
+              </div>
+
+              <div class="restaurant-item" id="rest-mongolian">
+                <img class="rest-thumb" src="assets/img/ger.png"
+                     alt="ger kitchen монгол хоол" width="160" height="110" />
+                <div class="rest-info">
+                  <h4>ger kitchen</h4>
+                  <p class="rating">
+                    <span class="rating-num">4.2</span>
+                    <span class="stars" aria-label="5 одоос 4.2">★★★★☆</span>
+                    <span class="review-count">(33 сэтгэгдэл)</span>
+                  </p>
+                  <p class="tags">#монгол</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <p class="page-links">
+            <a href="#screen-home">нүүр</a> |
+            <a href="#screen-search">хайлт</a>
+          </p>
+
+        </div>
+        <!-- /ресторан -->
+
+
+        <!-- ==================
+             C) ХАЙЛТ
+             ================== -->
+        <div id="screen-search" class="card">
+
+          <h2>хайлт</h2>
+
+          <form action="#screen-restaurants" method="get" class="search-form">
+            <fieldset>
+              <legend class="visually-hidden">хайлтын форм</legend>
+
+              <div class="search-box">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg"
+                     width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor"
+                    d="M10 2a8 8 0 105.293 14.293l4.707 4.707
+                       1.414-1.414-4.707-4.707A8 8 0 0010 2zm0
+                       2a6 6 0 110 12 6 6 0 010-12z" />
+                </svg>
+                <label for="q-search" class="visually-hidden">нэр, хоолоор хайх</label>
+                <input type="text" id="q-search" name="q" value="" />
+                <span class="placeholder-text">ресторан, хоол хайх...</span>
+              </div>
+
+              <div class="form-row">
+                <input type="submit" value="хайх" />
+                <input type="reset" value="арилгах" />
+              </div>
+
+            </fieldset>
+          </form>
+
+          <!-- ангилалуудаар хайх chips -->
+          <h3>ангилалаар хайх</h3>
+
+          <div class="chip-groups">
+
+            <div class="chip-group">
+              <h4>ресторан</h4>
+              <ul class="chip-list">
+                <li><a href="#rest-korean">солонгос</a></li>
+                <li><a href="#rest-european">европ</a></li>
+                <li><a href="#rest-chinese">хятад</a></li>
+                <li><a href="#rest-italian">итали</a></li>
+                <li><a href="#rest-mongolian">монгол</a></li>
+              </ul>
+            </div>
+
+            <div class="chip-group">
+              <h4>кафе</h4>
+              <ul class="chip-list">
+                <li><a href="#screen-restaurants">кофе шоп</a></li>
+                <li><a href="#screen-restaurants">бөмбөлөгтэй цай</a></li>
+                <li><a href="#screen-restaurants">өглөөний цай</a></li>
+              </ul>
+            </div>
+
+            <div class="chip-group">
+              <h4>паб &amp; баар</h4>
+              <ul class="chip-list">
+                <li><a href="#screen-restaurants">паб</a></li>
+                <li><a href="#screen-restaurants">лоунж</a></li>
+                <li><a href="#screen-restaurants">клуб</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <p class="page-links">
+            <a href="#screen-home">нүүр</a> |
+            <a href="#screen-restaurants">ресторан</a>
+          </p>
+
+        </div>
+        <!-- /хайлт -->
+
+
+      </div>
+    </div>
+    <!-- /app -->
+
+
+    <!-- ====== FOOTER ====== -->
+    <div id="footer">
+      <div class="wrap footer-inner">
+        <p>&#169; 2026 bon délice &mdash; tugusu team</p>
+        <p><a href="#top">&#8679; дээш буцах</a></p>
+      </div>
+    </div>
+
+  </div>
+  <!-- /page -->
+
+</body>
+</html>
