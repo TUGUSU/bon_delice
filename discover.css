@@ -1,133 +1,130 @@
 /*
-  bon délice - discover.css
-  Энэ файлд вэб хуудасны бүх загварчлалыг хийлээ.
+ * =============================================================
+ *  bon délice — discover.css
+ *  CS142 Web Applications · Stanford University (style)
+ *  Author : TUGUSU
+ *  Date   : 2026
+ * =============================================================
+ *
+ *  TABLE OF CONTENTS
+ *  -----------------
+ *  1.  Custom Properties  (design tokens)
+ *  2.  Dark-mode overrides  (CSS-only checkbox hack)
+ *  3.  Reset & Base
+ *  4.  Accessibility helpers  (.vh, .skip)
+ *  5.  Layout shell  (.wrap, #shell, #page)
+ *  6.  Header & Brand
+ *  7.  Navigation
+ *  8.  Theme-toggle button
+ *  9.  Cards  (+ fade-up animation)
+ * 10.  Banner / media blocks
+ * 11.  Carousel dots
+ * 12.  Category grid & tiles
+ * 13.  Filter form
+ * 14.  Restaurant list & items
+ * 15.  Search form
+ * 16.  Category-chip groups
+ * 17.  Footer
+ * 18.  Shared utilities  (.links, .row, .btn)
+ * 19.  Media queries
+ *       19a. portrait phone   (≥ 0  — default, mobile-first)
+ *       19b. landscape phone  (≥ 480 px)
+ *       19c. tablet / desktop (≥ 768 px)
+ *       19d. wide desktop     (≥ 1024 px)
+ * 20.  Keyframe animations
+ * =============================================================
+ */
 
-  Бичсэн: tugusu team
-  Огноо: 2026
 
-  Хэрэгжүүлсэн зүйлс:
-  - CSS custom property (color, font, spacing token)
-  - Dark / Light горим (checkbox trick, JS-гүй)
-  - Animation болон transition
-  - Gradient, shadow, border-radius
-  - Inline SVG ашиглалт (HTML дотор)
-  - Grid болон Flexbox layout
-  - Responsive: гар утас (bosoo), гар утас (хэвтээ), компьютер
-  - Монгол текстэд тохирсон typography
-*/
-
-
-/* =====================================================
-   CSS CUSTOM PROPERTIES (Token буюу хувьсагч)
-
-   Бүх өнгө, хэмжээ, фонтыг эндэс хэрэглэнэ.
-   Ингэснээр нэг газраас өөрчлөхөд бүгд өөрчлөгдөнө.
-   Хатуу утга CSS rule дотор бичихгүй байх.
-===================================================== */
+/* ============================================================
+   1.  CUSTOM PROPERTIES  (design tokens)
+      All hard-coded values live here.  The rest of the file
+      must reference only var(--…) — never raw colours or px.
+   ============================================================ */
 :root {
+  /* — Typography — */
+  --font-body  : "Noto Sans", Arial, sans-serif;
+  --fs-sm      : 0.875rem;   /* 14 px — labels, tags          */
+  --fs-base    : 1rem;       /* 16 px — body copy             */
+  --fs-lg      : 1.45rem;    /* ~23 px — h1 brand             */
+  --lh-body    : 1.65;       /* comfortable Mongolian leading */
+  --lh-tight   : 1.25;       /* headings                      */
+  --ls-wide    : 0.06em;     /* subtle letter-spacing         */
+  --ws-body    : 0.04em;     /* word-spacing, Mongolian text  */
 
-  /* --- Өнгөнүүд --- */
-  --color-bg:        #ffffff;
-  --color-card:      #f6f7fb;
-  --color-border:    #e5e7eb;
-  --color-text:      #111827;
-  --color-muted:     #6b7280;
-  --color-brand:     #e11d48;
-  --color-chip-bg:   #eef2ff;
+  /* — Spacing scale (× 0.4 rem increments) — */
+  --sp-1 : 0.4rem;
+  --sp-2 : 0.75rem;
+  --sp-3 : 1rem;
+  --sp-4 : 1.5rem;
+  --sp-5 : 2.25rem;
+  --sp-6 : 3rem;
 
-  /* gradient - header болон accent-д ашиглана */
-  --color-grad: linear-gradient(
+  /* — Border radii — */
+  --rad-sm  : 0.5rem;
+  --rad-md  : 1rem;
+  --rad-pill: 999px;
+
+  /* — Shadows — */
+  --sh-sm : 0 4px 12px rgba(0, 0, 0, 0.08);
+  --sh-md : 0 10px 28px rgba(0, 0, 0, 0.12);
+  --sh-lg : 0 18px 48px rgba(0, 0, 0, 0.18);
+
+  /* — Colour palette (light mode) — */
+  --clr-bg      : #ffffff;
+  --clr-surface : #f4f5f9;
+  --clr-border  : #e2e5ed;
+  --clr-text    : #111827;
+  --clr-muted   : #6b7280;
+  --clr-brand   : #e11d48;
+  --clr-chip-bg : #eef2ff;
+
+  /* — Gradient (header + card accents) — */
+  --grad-header : linear-gradient(
     135deg,
-    rgba(225, 29, 72, 0.12),
-    rgba(59, 130, 246, 0.12)
+    rgba(225, 29, 72, 0.10) 0%,
+    rgba(59, 130, 246, 0.10) 100%
   );
 
-  /* --- Фонт --- */
-  --font-body: "Noto Sans", Arial, sans-serif;
-
-  /* Монгол текст уншихад тохирсон typography утгууд.
-     line-height 1.6 нь монгол үсгийн мөр хоорондын зайг
-     харааны хувьд тохиромжтой болгодог. */
-  --font-size-sm:   0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg:   1.25rem;
-  --font-size-xl:   1.5rem;
-
-  --line-height-body:    1.6;
-  --line-height-heading: 1.3;
-  --letter-spacing-body: 0.01em;
-  --word-spacing-mn:     0.1em;    /* монгол үгийн хоорондын зай */
-
-  /* --- Зай (spacing) --- */
-  --space-xs:  0.4rem;
-  --space-sm:  0.75rem;
-  --space-md:  1rem;
-  --space-lg:  1.5rem;
-  --space-xl:  2rem;
-
-  /* --- Border radius --- */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.875rem;
-  --radius-full: 999px;
-
-  /* --- Shadow --- */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.13);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.18);
-
-  /* --- Max width --- */
-  --max-width: 72rem;
+  /* — Transition — */
+  --tx-fast : 160ms ease;
+  --tx-base : 220ms ease;
 }
 
 
-/* =====================================================
-   DARK MODE
-
-   #theme-toggle checkbox тэмдэглэгдэхэд
-   ~ selector ашиглаад #page доторх
-   custom property-уудыг override хийнэ.
-   Ингэснээр JS ашиглалгүйгээр dark mode ажиллана.
-===================================================== */
-#theme-toggle {
-  /* энэ checkbox харагдахгүй байна, label нь товч болно */
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
+/* ============================================================
+   2.  DARK-MODE OVERRIDES
+      Pure CSS: the hidden checkbox #theme-toggle acts as state.
+      Sibling combinator (~) lets it control #page's custom
+      properties — no JavaScript required.
+   ============================================================ */
 #theme-toggle:checked ~ #page {
-  --color-bg:     #0d1117;
-  --color-card:   #161b22;
-  --color-border: rgba(255, 255, 255, 0.12);
-  --color-text:   #e6edf3;
-  --color-muted:  #8b949e;
-  --color-chip-bg: rgba(255, 255, 255, 0.07);
-
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.6);
-
-  --color-grad: linear-gradient(
+  --clr-bg      : #0b0f19;
+  --clr-surface : #111827;
+  --clr-border  : rgba(255, 255, 255, 0.12);
+  --clr-text    : #e5e7eb;
+  --clr-muted   : #9ca3af;
+  --clr-chip-bg : rgba(255, 255, 255, 0.07);
+  --sh-sm : 0 4px 14px rgba(0, 0, 0, 0.40);
+  --sh-md : 0 10px 32px rgba(0, 0, 0, 0.55);
+  --sh-lg : 0 18px 50px rgba(0, 0, 0, 0.65);
+  --grad-header : linear-gradient(
     135deg,
-    rgba(225, 29, 72, 0.2),
-    rgba(59, 130, 246, 0.15)
+    rgba(225, 29, 72, 0.22) 0%,
+    rgba(59, 130, 246, 0.14) 100%
   );
 }
 
 
-/* =====================================================
-   BASE STYLES
-
-   Хамгийн эхлээд бүх элементэд нийтлэг дүрмүүд.
-===================================================== */
+/* ============================================================
+   3.  RESET & BASE
+   ============================================================ */
 html {
+  /* Rem anchor — change this one value to scale all spacing. */
   font-size: 16px;
   box-sizing: border-box;
 }
 
-/* box-sizing бүх элементэд өвлүүлнэ - энэ их тохиромжтой */
 *,
 *::before,
 *::after {
@@ -135,778 +132,794 @@ html {
 }
 
 body {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-body);
-  letter-spacing: var(--letter-spacing-body);
-  word-spacing: var(--word-spacing-mn);
-  /* fallback өнгө - CSS variable дэмжихгүй хуучин browser-д зориулсан */
-  background: #ffffff;
-  color: #111827;
+  margin         : 0;
+  font-family    : var(--font-body);
+  font-size      : var(--fs-base);
+  line-height    : var(--lh-body);
+  word-spacing   : var(--ws-body);
+  letter-spacing : var(--ls-wide);
+  background     : var(--clr-bg);
+  color          : var(--clr-text);
 }
 
-/* #page нь dark mode-ийн үндсэн контейнер */
-#page {
-  min-height: 100vh;
-  background: var(--color-bg);
-  color: var(--color-text);
-  /* өнгө шилжилт нь smooth байх */
-  transition: background 300ms ease, color 300ms ease;
-}
-
-/* зургийг responsive болгох */
+/* Responsive images — never overflow their container. */
 img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border: 0;
+  max-width : 100%;
+  height    : auto;
+  display   : block;
+  border    : 0;
 }
 
-/* link-үүдийн нийтлэг загвар */
-a {
-  color: var(--color-brand);
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  text-decoration: underline;
-}
-
-/* heading typography */
+/* Headings — tighten line-height for display text. */
 h1, h2, h3, h4 {
-  color: var(--color-text);
-  line-height: var(--line-height-heading);
-  margin-top: 0;
+  line-height  : var(--lh-tight);
+  margin-top   : 0;
+  margin-bottom: var(--sp-2);
 }
-
-h1 { font-size: var(--font-size-xl); margin-bottom: var(--space-xs); }
-h2 { font-size: var(--font-size-lg); margin-bottom: var(--space-sm); }
-h3 { font-size: var(--font-size-base); margin-bottom: var(--space-sm); }
-h4 { font-size: var(--font-size-base); margin-bottom: var(--space-xs); }
 
 p {
-  color: var(--color-text);
-  margin-top: 0;
-  margin-bottom: var(--space-sm);
+  margin-top   : 0;
+  margin-bottom: var(--sp-2);
 }
 
 
-/* =====================================================
-   UTILITY CLASSES
-===================================================== */
+/* ============================================================
+   4.  ACCESSIBILITY HELPERS
+   ============================================================ */
 
-/* screen reader-д харагдана, харин нүдэнд харагдахгүй */
-.visually-hidden {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+/* Visually hidden — readable by screen readers, invisible visually. */
+.vh {
+  position : absolute;
+  left     : -9999px;
+  top      : auto;
+  width    : 1px;
+  height   : 1px;
+  overflow : hidden;
 }
 
-/* max-width container, дунд нь байрлуулна */
-.wrap {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-md) var(--space-lg);
+/* Skip link — jumps keyboard users past the header. */
+.skip {
+  margin  : 0;
+  padding : var(--sp-2);
 }
 
-
-/* =====================================================
-   SKIP LINK (accessibility)
-
-   Tab дарахад гарч ирнэ, keyboard хэрэглэгчдэд зориулсан.
-===================================================== */
-.skip-link {
-  margin: 0;
-  padding: 0;
+.skip a {
+  position      : absolute;
+  left          : -9999px;
+  top           : 0;
+  background    : var(--clr-surface);
+  color         : var(--clr-text);
+  padding       : var(--sp-2) var(--sp-3);
+  border-radius : var(--rad-sm);
+  box-shadow    : var(--sh-md);
+  text-decoration: none;
+  font-size     : var(--fs-sm);
 }
 
-.skip-link a {
-  position: absolute;
-  left: -9999px;
-  top: var(--space-sm);
-  background: var(--color-card);
-  color: var(--color-text);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
-  z-index: 100;
-}
-
-.skip-link a:focus {
-  left: var(--space-md);
-  outline: 2px solid var(--color-brand);
+/* Reveal on keyboard focus. */
+.skip a:focus {
+  left    : var(--sp-2);
+  top     : var(--sp-2);
+  outline : 2px solid var(--clr-brand);
   outline-offset: 2px;
 }
 
 
-/* =====================================================
-   HEADER
+/* ============================================================
+   5.  LAYOUT SHELL
+   ============================================================ */
 
-   Gradient background ашиглана.
-   Дотроо flex ашиглаж лого, toggle товч зэрэгцүүлнэ.
-===================================================== */
+/* Hidden checkbox — positioned off-screen, not display:none
+   (must remain focusable for assistive tech in some browsers). */
+#theme-toggle {
+  position : absolute;
+  left     : -9999px;
+  width    : 1px;
+  height   : 1px;
+  overflow : hidden;
+}
+
+/* Full-height page wrapper so dark bg fills the viewport. */
+#page {
+  min-height : 100vh;
+  background : var(--clr-bg);
+  color      : var(--clr-text);
+  /* Smooth colour transition when toggling dark/light. */
+  transition : background var(--tx-base), color var(--tx-base);
+}
+
+/* Centred content column used by header, nav, and #main. */
+.wrap {
+  max-width : 72rem;
+  margin    : 0 auto;
+  padding   : var(--sp-3);
+}
+
+
+/* ============================================================
+   6.  HEADER & BRAND
+   ============================================================ */
 #header {
-  background: var(--color-grad);
-  border-bottom: 1px solid var(--color-border);
+  background    : var(--grad-header);
+  border-bottom : 1px solid var(--clr-border);
+  /* Subtle sticky-top shadow on scroll (no JS needed). */
+  box-shadow    : var(--sh-sm);
 }
 
-/* лого + toggle хэсэг */
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
+/* Brand row: logo + text on the left, theme toggle on the right. */
+.head {
+  display         : flex;
+  align-items     : center;
+  justify-content : space-between;
+  gap             : var(--sp-3);
 }
 
-/* брэнд нэр + лого хажуу тийш байрлана */
 .brand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  display     : flex;
+  align-items : center;
+  gap         : var(--sp-2);
 }
 
-.logo-icon {
-  flex-shrink: 0;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
+.logo {
+  background    : var(--clr-surface);
+  padding       : var(--sp-1);
+  border-radius : var(--rad-sm);
+  box-shadow    : var(--sh-sm);
+  /* Gentle lift on hover to keep the header interactive. */
+  transition    : transform var(--tx-fast), box-shadow var(--tx-fast);
+}
+
+.logo:hover {
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-md);
 }
 
 .brand-text h1 {
-  margin: 0;
-  font-size: var(--font-size-lg);
-  color: var(--color-text);
+  margin    : 0;
+  font-size : var(--fs-lg);
 }
 
 .brand-text p {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
+  margin    : 0;
+  color     : var(--clr-muted);
+  font-size : var(--fs-sm);
 }
 
-/* dark/light toggle товч */
-.theme-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-card);
-  color: var(--color-text);
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--font-size-sm);
-  box-shadow: var(--shadow-sm);
-  transition: transform 200ms ease, box-shadow 200ms ease;
+/* Inline SVG used for decorative brand accent — requirement #9.
+   The <svg> tag is placed directly inside .brand-icon in HTML.
+   We only size it here; shape and fill live in the HTML markup. */
+.brand-icon svg {
+  width  : 1.5rem;
+  height : 1.5rem;
+  fill   : var(--clr-brand);
 }
 
-.theme-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
 
-/* label текстийг dark/light горимоор харуулах */
-.btn-label-dark  { display: none; }
-.btn-label-light { display: inline; }
-
-#theme-toggle:checked ~ #page .btn-label-dark  { display: inline; }
-#theme-toggle:checked ~ #page .btn-label-light { display: none; }
-
-/* навигацийн цэс */
+/* ============================================================
+   7.  NAVIGATION
+   ============================================================ */
 .nav-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
+  margin      : 0;
+  padding     : 0;
+  list-style  : none;
+  display     : flex;
+  gap         : var(--sp-2);
+  flex-wrap   : wrap; /* wraps on small screens */
 }
 
 .nav-list a {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-md);
-  background: var(--color-card);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  box-shadow: var(--shadow-sm);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  display         : inline-block;
+  padding         : var(--sp-1) var(--sp-3);
+  border          : 1px solid var(--clr-border);
+  border-radius   : var(--rad-pill);
+  background      : var(--clr-surface);
+  color           : var(--clr-text);
+  text-decoration : none;
+  font-size       : var(--fs-sm);
+  box-shadow      : var(--sh-sm);
+  transition      : transform var(--tx-fast), box-shadow var(--tx-fast),
+                    background var(--tx-fast);
 }
 
 .nav-list a:hover,
 .nav-list a:focus {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-  outline: none;
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-md);
+  outline    : none;
+}
+
+.nav-list a:focus-visible {
+  outline        : 2px solid var(--clr-brand);
+  outline-offset : 2px;
 }
 
 
-/* =====================================================
-   CARD
+/* ============================================================
+   8.  THEME-TOGGLE BUTTON
+      The <label> for the hidden checkbox acts as the button.
+   ============================================================ */
+.theme-btn {
+  display       : inline-flex;
+  align-items   : center;
+  gap           : var(--sp-1);
+  padding       : var(--sp-1) var(--sp-3);
+  border-radius : var(--rad-pill);
+  border        : 1px solid var(--clr-border);
+  background    : var(--clr-surface);
+  color         : var(--clr-text);
+  cursor        : pointer;
+  font-size     : var(--fs-sm);
+  box-shadow    : var(--sh-sm);
+  transition    : transform var(--tx-fast), box-shadow var(--tx-fast);
+  /* Prevent text selection on repeated clicks. */
+  user-select   : none;
+}
 
-   Хуудас дотрох үндсэн блокуудын загвар.
-   Animation: доороос дээш гарч ирнэ (fade + slide).
-===================================================== */
+.theme-btn:hover {
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-md);
+}
+
+/* Append mode label automatically — no extra HTML needed. */
+#theme-toggle:not(:checked) ~ #page .theme-btn::after {
+  content : " ☀ гэрэл";
+  color   : var(--clr-muted);
+}
+
+#theme-toggle:checked ~ #page .theme-btn::after {
+  content : " ☾ харанхуй";
+  color   : var(--clr-muted);
+}
+
+
+/* ============================================================
+   9.  CARDS  (each "screen" section)
+      animation: fade-up on load — see §20 for @keyframes.
+   ============================================================ */
 .card {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
-
-  /* page load-д гарч ирэх animation */
-  animation: slide-up 500ms ease both;
+  background    : var(--clr-surface);
+  border        : 1px solid var(--clr-border);
+  border-radius : var(--rad-md);
+  box-shadow    : var(--sh-md);
+  padding       : var(--sp-4);
+  margin-bottom : var(--sp-4);
+  /* Staggered reveal — each card fades up slightly after the last. */
+  animation     : fadeUp 520ms ease both;
 }
 
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Stagger the three cards via :nth-of-type. */
+.card:nth-of-type(2) { animation-delay: 80ms;  }
+.card:nth-of-type(3) { animation-delay: 160ms; }
+
+
+/* ============================================================
+   10. BANNER / MEDIA BLOCKS
+   ============================================================ */
+.media {
+  margin        : 0;
+  border-radius : var(--rad-md);
+  overflow      : hidden;
+  box-shadow    : var(--sh-lg);
+  border        : 1px solid var(--clr-border);
+  /* Smooth shadow change on hover. */
+  transition    : box-shadow var(--tx-base);
+}
+
+.media:hover {
+  box-shadow : var(--sh-lg);
+}
+
+.media img {
+  width      : 100%;
+  object-fit : cover;
 }
 
 
-/* =====================================================
-   БАЙРШИЛ ТЕКСТ
-===================================================== */
-.location-text {
-  display: flex;
+/* ============================================================
+   11. CAROUSEL DOTS
+   ============================================================ */
+.dots {
+  margin  : var(--sp-2) 0 0;
+  display : flex;
+  justify-content: center;
+  gap     : var(--sp-1);
+}
+
+.dot {
+  width         : 0.5rem;
+  height        : 0.5rem;
+  border-radius : var(--rad-pill);
+  background    : rgba(0, 0, 0, 0.18);
+  transition    : background var(--tx-fast), transform var(--tx-fast);
+}
+
+#theme-toggle:checked ~ #page .dot {
+  background : rgba(255, 255, 255, 0.18);
+}
+
+/* Active / current dot. */
+.dot.on {
+  background : var(--clr-brand);
+  transform  : scale(1.3);
+}
+
+
+/* ============================================================
+   12. CATEGORY GRID & TILES
+      Mobile: 1 column → landscape phone: 2 columns →
+      desktop: 2 columns with full-width "wide" tile.
+   ============================================================ */
+.grid {
+  display               : grid;
+  grid-template-columns : 1fr;
+  gap                   : var(--sp-3);
+}
+
+/* "wide" tiles span all columns on larger screens (see §19). */
+.wide {
+  grid-column : auto; /* reset; overridden in media query */
+}
+
+.tile {
+  border-radius : var(--rad-md);
+  overflow      : hidden;
+  box-shadow    : var(--sh-sm);
+  border        : 1px solid var(--clr-border);
+  background    : var(--clr-surface);
+  transition    : transform var(--tx-base), box-shadow var(--tx-base);
+}
+
+.tile:hover {
+  transform  : translateY(-3px);
+  box-shadow : var(--sh-lg);
+}
+
+/* Category label above image inside each tile. */
+.cap {
+  margin  : 0;
+  padding : var(--sp-2) var(--sp-3) var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.cap a {
+  color           : var(--clr-text);
+  text-decoration : none;
+  transition      : color var(--tx-fast);
+}
+
+.cap a:hover {
+  color : var(--clr-brand);
+}
+
+
+/* ============================================================
+   13. FILTER FORM
+   ============================================================ */
+
+/* Remove default fieldset chrome. */
+.filter fieldset {
+  border        : 1px solid var(--clr-border);
+  border-radius : var(--rad-md);
+  background    : var(--clr-bg);
+  padding       : var(--sp-3);
+  margin        : 0;
+}
+
+select {
+  width         : 100%;
+  padding       : var(--sp-1) var(--sp-2);
+  border-radius : var(--rad-md);
+  border        : 1px solid var(--clr-border);
+  background    : var(--clr-surface);
+  color         : var(--clr-text);
+  font-family   : var(--font-body);
+  font-size     : var(--fs-base);
+  cursor        : pointer;
+  transition    : border-color var(--tx-fast);
+}
+
+select:focus {
+  outline      : none;
+  border-color : var(--clr-brand);
+}
+
+label {
+  font-size   : var(--fs-sm);
+  font-weight : 600;
+  color       : var(--clr-muted);
+  display     : block;
+  margin-bottom: var(--sp-1);
+}
+
+
+/* ============================================================
+   14. RESTAURANT LIST & ITEMS
+   ============================================================ */
+.list {
+  display               : grid;
+  grid-template-columns : 1fr;
+  gap                   : var(--sp-2);
+}
+
+.item {
+  display       : flex;
+  gap           : var(--sp-3);
+  align-items   : center;
+  background    : var(--clr-bg);
+  border        : 1px solid var(--clr-border);
+  border-radius : var(--rad-md);
+  padding       : var(--sp-2);
+  box-shadow    : var(--sh-sm);
+  transition    : transform var(--tx-base), box-shadow var(--tx-base);
+}
+
+.item:hover {
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-md);
+}
+
+/* Thumbnail image inside each list item. */
+.thumb {
+  width         : 6rem;    /* fluid but capped */
+  aspect-ratio  : 3 / 2;
+  object-fit    : cover;
+  border-radius : var(--rad-sm);
+  border        : 1px solid var(--clr-border);
+  flex-shrink   : 0;
+}
+
+.meta h4 {
+  margin        : 0 0 var(--sp-1);
+  font-size     : var(--fs-base);
+}
+
+/* Star rating row. */
+.rate {
+  margin    : 0 0 var(--sp-1);
+  color     : var(--clr-muted);
+  font-size : var(--fs-sm);
+  display   : flex;
+  gap       : var(--sp-1);
   align-items: center;
-  gap: var(--space-xs);
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-md);
 }
 
-.location-text strong {
-  color: var(--color-text);
+/* Numeric score in bold brand colour. */
+.rate .n {
+  font-weight : 700;
+  color       : var(--clr-brand);
+}
+
+/* Tags / cuisine labels. */
+.tag {
+  margin    : 0;
+  color     : var(--clr-muted);
+  font-size : var(--fs-sm);
 }
 
 
-/* =====================================================
-   ХАЙЛТЫН ФОРМ
+/* ============================================================
+   15. SEARCH FORM
+   ============================================================ */
 
-   XHTML strict нь placeholder attribute дэмждэггүй тул
-   .placeholder-text span ашиглаж ижил харагдуулна.
-===================================================== */
-.search-form fieldset {
-  border: 0;
-  padding: 0;
-  margin: 0;
+/* Remove default fieldset chrome for the search card. */
+.search fieldset {
+  border  : 0;
+  padding : 0;
+  margin  : 0;
 }
 
+/* The search-box pill: icon + input + placeholder hint. */
 .search-box {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  position: relative;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-sm);
-  margin-bottom: var(--space-sm);
+  position      : relative;
+  display       : flex;
+  align-items   : center;
+  gap           : var(--sp-2);
+  border        : 1px solid var(--clr-border);
+  border-radius : var(--rad-pill);
+  padding       : var(--sp-2) var(--sp-3);
+  background    : rgba(255, 255, 255, 0.55);
+  transition    : border-color var(--tx-fast), box-shadow var(--tx-fast);
+  margin        : 0;
 }
 
-/* dark mode-д search box өнгийг өөрчилнэ */
 #theme-toggle:checked ~ #page .search-box {
-  background: rgba(255, 255, 255, 0.05);
+  background : rgba(255, 255, 255, 0.06);
 }
 
-.search-icon {
+.search-box:focus-within {
+  border-color : var(--clr-brand);
+  box-shadow   : 0 0 0 3px rgba(225, 29, 72, 0.15);
+}
+
+/* The SVG search icon container — requirement #9 uses <object> in HTML. */
+.icon {
+  display    : inline-flex;
+  align-items: center;
+  width      : 1.1rem;
+  height     : 1.1rem;
   flex-shrink: 0;
-  color: var(--color-muted);
 }
 
 .search-box input[type="text"] {
-  flex: 1;
-  border: 0;
-  background: transparent;
-  outline: none;
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  padding: 0;
+  flex        : 1;
+  border      : 0;
+  background  : transparent;
+  outline     : none;
+  color       : var(--clr-text);
+  font-family : var(--font-body);
+  font-size   : var(--fs-base);
+  padding     : 0;
 }
 
-/* fake placeholder текст */
-.placeholder-text {
-  position: absolute;
-  /* search icon (18px) + gap (12px) + padding (12px) = ~42px */
-  left: 42px;
-  color: var(--color-muted);
-  pointer-events: none;
-  transition: opacity 150ms ease;
+/* Placeholder hint text (fades when the input is focused). */
+.hint {
+  position       : absolute;
+  /* Align with the text field (icon width + gap). */
+  left           : calc(1.1rem + var(--sp-2) + var(--sp-3));
+  color          : var(--clr-muted);
+  pointer-events : none;
+  font-size      : var(--fs-base);
+  transition     : opacity var(--tx-fast);
 }
 
-/* input-д фокус орж эсвэл хулганаар hover хийхэд placeholder алга болно */
-.search-box input[type="text"]:focus + .placeholder-text,
-.search-box input[type="text"]:hover + .placeholder-text {
-  opacity: 0;
+.search-box input:focus + .hint {
+  opacity : 0;
 }
 
-/* form доторх товч + link эгнээ */
-.form-row {
-  display: flex;
-  gap: var(--space-sm);
+
+/* ============================================================
+   16. CHIP LISTS  (cuisine filter tags)
+   ============================================================ */
+.chips {
+  margin       : var(--sp-2) 0 0;
+  padding      : 0;
+  list-style   : none;
+  display      : flex;
+  gap          : var(--sp-1);
+  overflow-x   : auto;    /* horizontal scroll on mobile */
+  white-space  : nowrap;
+  /* Hide scrollbar on WebKit while keeping scroll. */
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar {
+  display : none;
+}
+
+.chips a {
+  display         : inline-block;
+  padding         : var(--sp-1) var(--sp-2);
+  border-radius   : var(--rad-pill);
+  border          : 1px solid var(--clr-border);
+  background      : var(--clr-chip-bg);
+  color           : var(--clr-text);
+  text-decoration : none;
+  font-size       : var(--fs-sm);
+  white-space     : nowrap;
+  transition      : transform var(--tx-fast), box-shadow var(--tx-fast),
+                    background var(--tx-fast);
+}
+
+.chips a:hover,
+.chips a:focus {
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-sm);
+  outline    : none;
+}
+
+.chips a:focus-visible {
+  outline        : 2px solid var(--clr-brand);
+  outline-offset : 2px;
+}
+
+/* Wrapping variant used in the search screen's grouped chips. */
+.chips-wrap {
+  flex-wrap   : wrap;
+  white-space : normal;
+  overflow-x  : visible;
+}
+
+/* Group container in screen-c (search). */
+.groups {
+  display : grid;
+  gap     : var(--sp-3);
+}
+
+.group h4 {
+  margin-bottom : var(--sp-1);
+  font-size     : var(--fs-sm);
+  font-weight   : 700;
+  color         : var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+/* ============================================================
+   17. FOOTER
+   ============================================================ */
+#footer {
+  text-align : center;
+  padding    : var(--sp-5) var(--sp-4);
+  color      : var(--clr-muted);
+  font-size  : var(--fs-sm);
+  /* Subtle top gradient accent. */
+  background : var(--grad-header);
+  border-top : 1px solid var(--clr-border);
+}
+
+#footer a {
+  color           : var(--clr-brand);
+  text-decoration : none;
+  transition      : opacity var(--tx-fast);
+}
+
+#footer a:hover {
+  opacity : 0.75;
+}
+
+
+/* ============================================================
+   18. SHARED UTILITIES
+   ============================================================ */
+
+/* Page-navigation links (нүүр | ресторан | хайлт). */
+.links {
+  margin-top : var(--sp-3);
+  color      : var(--clr-muted);
+  font-size  : var(--fs-sm);
+}
+
+.links a {
+  color           : var(--clr-brand);
+  text-decoration : none;
+  transition      : opacity var(--tx-fast);
+}
+
+.links a:hover,
+.links a:focus {
+  text-decoration : underline;
+}
+
+/* Button row — used below filter selects and search. */
+.row {
+  margin  : var(--sp-2) 0 0;
+  display : flex;
+  gap     : var(--sp-2);
   flex-wrap: wrap;
-  align-items: center;
 }
 
-
-/* =====================================================
-   ТОВЧ (Button) ЗАГВАРУУД
-
-   input[type="submit"], input[type="reset"], .btn-secondary
-   эдгээр гурав нь ижил base загвартай.
-===================================================== */
+/* Shared button base — submit, reset, and .btn class. */
 input[type="submit"],
 input[type="reset"],
-.btn-secondary {
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  padding: var(--space-xs) var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  color: var(--color-text);
-  cursor: pointer;
+.btn {
+  font-family   : var(--font-body);
+  font-size     : var(--fs-base);
+  padding       : var(--sp-1) var(--sp-3);
+  border-radius : var(--rad-md);
+  border        : 1px solid var(--clr-border);
+  background    : var(--clr-bg);
+  color         : var(--clr-text);
+  cursor        : pointer;
   text-decoration: none;
-  display: inline-block;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition    : transform var(--tx-fast), box-shadow var(--tx-fast);
 }
 
-/* үндсэн submit товч улаан background-тай */
+/* Primary action — brand-coloured submit. */
 input[type="submit"] {
-  background: var(--color-brand);
-  border-color: transparent;
-  color: #ffffff;
+  background   : var(--clr-brand);
+  border-color : transparent;
+  color        : #ffffff;
+  font-weight  : 600;
 }
 
 input[type="submit"]:hover,
 input[type="submit"]:focus,
 input[type="reset"]:hover,
 input[type="reset"]:focus,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  outline: none;
+.btn:hover,
+.btn:focus {
+  transform  : translateY(-2px);
+  box-shadow : var(--sh-sm);
+  outline    : none;
+}
+
+input[type="submit"]:focus-visible,
+input[type="reset"]:focus-visible,
+.btn:focus-visible {
+  outline        : 2px solid var(--clr-brand);
+  outline-offset : 2px;
+}
+
+/* "Мuted" section title used before list blocks. */
+.muted {
+  color     : var(--clr-muted);
+  font-size : var(--fs-sm);
 }
 
 
-/* =====================================================
-   БАННЕР ЗУРАГ
-===================================================== */
-.banner-wrap {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--color-border);
-  margin-bottom: var(--space-sm);
-}
+/* ============================================================
+   19. MEDIA QUERIES
+      Strategy: mobile-first — default styles target portrait
+      phones (≤ 479 px).  Each breakpoint progressively
+      enhances the layout.
+   ============================================================ */
 
-/* slider indicator dots */
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.2);
-  transition: background 200ms ease;
-}
-
-/* dark mode dots */
-#theme-toggle:checked ~ #page .dot {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* идэвхтэй dot нь брэнд өнгөтэй */
-.dot.active {
-  background: var(--color-brand);
-}
-
-
-/* =====================================================
-   АНГИЛЛЫН GRID
-
-   Mobile: 1 багана
-   Tablet+: 2 багана
-   .tile-wide нь 2 баганыг бүтнээр эзэлнэ
-===================================================== */
-.category-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-md);
-  margin-bottom: var(--space-lg);
-}
-
-.category-tile {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.category-tile:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.tile-label {
-  margin: 0;
-  padding: var(--space-sm) var(--space-md);
-  background: var(--color-grad);
-  font-weight: 600;
-}
-
-.tile-label a {
-  color: var(--color-text);
-  text-decoration: none;
-}
-
-.tile-img {
-  overflow: hidden;
-}
-
-.tile-img img {
-  width: 100%;
-  transition: transform 300ms ease;
-}
-
-.category-tile:hover .tile-img img {
-  transform: scale(1.03);
-}
-
-
-/* =====================================================
-   TAB ЖАГСААЛТ
-===================================================== */
-.tab-list {
-  margin: 0 0 var(--space-md) 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: var(--space-sm);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-sm);
-}
-
-.tab-list a {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-md);
-  background: var(--color-chip-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  text-decoration: none;
-  transition: transform 180ms ease, background 180ms ease;
-}
-
-.tab-list a:hover,
-.tab-list a:focus {
-  transform: translateY(-1px);
-  background: var(--color-brand);
-  color: #ffffff;
-  border-color: transparent;
-  outline: none;
-}
-
-
-/* =====================================================
-   CHIP ЖАГСААЛТ
-
-   Ангилал болон хайлтын товчнуудын загвар.
-===================================================== */
-.chip-list {
-  margin: 0 0 var(--space-md) 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.chip-list a {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--color-chip-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  text-decoration: none;
-  transition: transform 180ms ease, background 180ms ease;
-}
-
-.chip-list a:hover,
-.chip-list a:focus {
-  transform: translateY(-1px);
-  background: var(--color-brand);
-  color: #ffffff;
-  border-color: transparent;
-  outline: none;
-}
-
-
-/* =====================================================
-   ШҮҮЛТИЙН ФОРМ
-===================================================== */
-.filter-section {
-  margin-bottom: var(--space-lg);
-}
-
-.filter-section fieldset {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  padding: var(--space-md);
-  margin: 0;
-}
-
-/* filter fields flex-ээр зэрэгцнэ */
-.filter-fields {
-  display: flex;
-  gap: var(--space-md);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-sm);
-}
-
-.filter-field {
-  flex: 1;
-  min-width: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.filter-field label {
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-  font-weight: 600;
-}
-
-select {
-  width: 100%;
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-card);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-}
-
-
-/* =====================================================
-   РЕСТОРАНЫ ЖАГСААЛТ
-===================================================== */
-.restaurant-block {
-  margin-bottom: var(--space-xl);
-}
-
-.restaurant-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-sm);
-}
-
-.restaurant-item {
-  display: flex;
-  gap: var(--space-md);
-  align-items: center;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-sm);
-  box-shadow: var(--shadow-sm);
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.restaurant-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.rest-thumb {
-  width: 9rem;
-  height: auto;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  flex-shrink: 0;
-  object-fit: cover;
-}
-
-.rest-info h4 {
-  margin-bottom: var(--space-xs);
-  text-transform: capitalize;
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-xs);
-}
-
-.rating-num {
-  font-weight: 700;
-  color: var(--color-brand);
-  font-size: var(--font-size-lg);
-}
-
-.stars {
-  color: #f59e0b;
-  letter-spacing: 1px;
-}
-
-.review-count {
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-}
-
-.tags {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-  word-spacing: 0.15em;
-}
-
-
-/* =====================================================
-   ХАЙЛТ ХУУДАСНЫ CHIP GROUP
-===================================================== */
-.chip-groups {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-md);
-  margin-bottom: var(--space-lg);
-}
-
-.chip-group h4 {
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: var(--space-xs);
-}
-
-
-/* =====================================================
-   PAGE NAVIGATION LINKS
-===================================================== */
-.page-links {
-  margin-top: var(--space-lg);
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
-}
-
-.page-links a {
-  color: var(--color-brand);
-}
-
-.page-links a:hover {
-  text-decoration: underline;
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
-#footer {
-  border-top: 1px solid var(--color-border);
-  background: var(--color-grad);
-}
-
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.footer-inner p {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-muted);
-}
-
-.footer-inner a {
-  color: var(--color-brand);
-}
-
-
-/* =====================================================
-   RESPONSIVE MEDIA QUERIES
-
-   CS142 lecture-д заасан 3 breakpoint:
-   1. гар утас босоо  -> default (mobile-first)
-   2. гар утас хэвтээ -> min-width: 600px
-   3. компьютер       -> min-width: 1024px
-===================================================== */
-
-/* --- 2. Гар утас хэвтээ / жижиг tablet (600px+) --- */
-@media screen and (min-width: 600px) {
-
-  /* ангиллын grid 2 баганатай болно */
-  .category-grid {
-    grid-template-columns: 1fr 1fr;
+/* ––– 19b. Landscape phone (≥ 480 px) ––– */
+@media screen and (min-width: 480px) {
+  .wrap {
+    padding : var(--sp-5);
   }
 
-  /* wide tile бүтэн мөрийг эзэлнэ */
-  .tile-wide {
-    grid-column: 1 / -1;
+  /* 2-column category grid. */
+  .grid {
+    grid-template-columns : 1fr 1fr;
   }
 
-  /* хайлтын chip groups 2 баганатай */
-  .chip-groups {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  /* filter fields мөн 2 баганатай */
-  .filter-fields {
-    flex-wrap: nowrap;
+  /* "wide" tile spans both columns. */
+  .wide {
+    grid-column : 1 / -1;
   }
 }
 
-/* --- 3. Компьютерийн дэлгэц (1024px+) --- */
+/* ––– 19c. Tablet / small desktop (≥ 768 px) ––– */
+@media screen and (min-width: 768px) {
+  /* Filter fields in a 3-column row. */
+  .filter fieldset {
+    display               : grid;
+    grid-template-columns : 1fr 1fr 1fr;
+    gap                   : var(--sp-2);
+    align-items           : end;
+  }
+
+  /* Button row spans all three filter columns. */
+  .filter .row {
+    grid-column : 1 / -1;
+  }
+
+  /* Chip groups in 3 columns. */
+  .groups {
+    grid-template-columns : 1fr 1fr 1fr;
+  }
+
+  /* Slightly larger thumbnail. */
+  .thumb {
+    width : 8rem;
+  }
+}
+
+/* ––– 19d. Wide desktop (≥ 1024 px) ––– */
 @media screen and (min-width: 1024px) {
-
-  /* рестораны жагсаалт 2 баганатай болно */
-  .restaurant-list {
-    grid-template-columns: 1fr 1fr;
+  /* 2-column restaurant list. */
+  .list {
+    grid-template-columns : 1fr 1fr;
   }
 
-  /* chip groups 3 баганатай */
-  .chip-groups {
-    grid-template-columns: 1fr 1fr 1fr;
+  /* Nav pills left-aligned. */
+  .nav-list {
+    justify-content : flex-start;
   }
 
-  /* header font жоохон томруулна */
-  .brand-text h1 {
-    font-size: var(--font-size-xl);
+  /* Larger thumbnail on wide screens. */
+  .thumb {
+    width : 10rem;
   }
+}
 
-  /* card padding арай их болно */
-  .card {
-    padding: var(--space-xl) calc(var(--space-xl) * 1.5);
+
+/* ============================================================
+   20. KEYFRAME ANIMATIONS
+   ============================================================ */
+
+/* Fade-up — applied to .card on page load. */
+@keyframes fadeUp {
+  from {
+    opacity   : 0;
+    transform : translateY(12px);
+  }
+  to {
+    opacity   : 1;
+    transform : translateY(0);
   }
 }
