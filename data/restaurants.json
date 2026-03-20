@@ -1,0 +1,96 @@
+{
+  "restaurants": [
+    {
+      "id": 1,
+      "name": "yuna",
+      "image": "assets/img/yuna.png",
+      "imageAlt": "yuna рестораны зураг",
+      "rating": 4.3,
+      "reviewCount": 86,
+      "tags": [
+        "солонгос ресторан",
+        "ази ресторан"
+      ],
+      "category": "korean",
+      "distance": 1.2,
+      "isOpen": true,
+      "section": "popular"
+    },
+    {
+      "id": 2,
+      "name": "seoul",
+      "image": "assets/img/seoul.png",
+      "imageAlt": "seoul рестораны зураг",
+      "rating": 4.2,
+      "reviewCount": 86,
+      "tags": [
+        "солонгос ресторан",
+        "ази ресторан"
+      ],
+      "category": "korean",
+      "distance": 2.1,
+      "isOpen": true,
+      "section": "popular"
+    },
+    {
+      "id": 3,
+      "name": "new york empire",
+      "image": "assets/img/new_york.png",
+      "imageAlt": "new york empire рестораны зураг",
+      "rating": 4.1,
+      "reviewCount": 86,
+      "tags": [
+        "европ ресторан"
+      ],
+      "category": "europe",
+      "distance": 3.4,
+      "isOpen": false,
+      "section": "popular"
+    },
+    {
+      "id": 4,
+      "name": "veranda",
+      "image": "assets/img/veranda.png",
+      "imageAlt": "veranda рестораны зураг",
+      "rating": 4.6,
+      "reviewCount": 52,
+      "tags": [
+        "итали ресторан"
+      ],
+      "category": "italian",
+      "distance": 0.8,
+      "isOpen": true,
+      "section": "new"
+    },
+    {
+      "id": 5,
+      "name": "tian tian",
+      "image": "assets/img/tin_tan.png",
+      "imageAlt": "tian tian рестораны зураг",
+      "rating": 4,
+      "reviewCount": 40,
+      "tags": [
+        "хятад ресторан"
+      ],
+      "category": "chinese",
+      "distance": 4.7,
+      "isOpen": true,
+      "section": "new"
+    },
+    {
+      "id": 6,
+      "name": "ger kitchen",
+      "image": "assets/img/ger.png",
+      "imageAlt": "ger kitchen рестораны зураг",
+      "rating": 4.2,
+      "reviewCount": 33,
+      "tags": [
+        "монгол хоол"
+      ],
+      "category": "mongolian",
+      "distance": 1.9,
+      "isOpen": true,
+      "section": "new"
+    }
+  ]
+}
