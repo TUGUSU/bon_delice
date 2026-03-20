@@ -1,5 +1,4 @@
-/**
- * neg restaurantii <div class="item"> card hiine 
+/** neg restaurantii <div class="item"> card hiine 
  * @param {import("./restaurant.js").Restaurant} restaurant
  * @returns {HTMLElement}
  */
@@ -16,7 +15,7 @@ export function buildItemNode(restaurant) { // neg restaurant object oos neg res
   img.width     = 160;
   img.height    = 110;
 
-  /* meta block нь restaurant card-ийн текстэн мэдээллүүдийг агуулж байгаа дотоод container юм.  */
+  /* meta block ni restaurant card iin texten medeelliig aguulj baigaa container  */
   const meta = document.createElement("div");
   meta.className = "meta";
 
