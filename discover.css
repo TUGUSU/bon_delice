@@ -1,4 +1,4 @@
-:root { /*Би color, spacing, typography-ийн утгуудыг :root дотор custom property болгосон. Дараа нь var(--name) гэж дуудаж ашигласан.*/
+:root { 
   --font-main: "Noto Sans", Arial, sans-serif;
 
   --fs-sm: 0.9rem;
@@ -36,7 +36,7 @@
   --trans-base: 0.25s ease;
 }
 
-/* dark/light mode - css only */
+/* dark/light mode - css */
 #theme-toggle {
   position: absolute;
   left: -9999px;
@@ -367,6 +367,18 @@ select {
   gap: var(--sp-2);
 }
 
+/*
+ * Loading state: while app.js fetches restaurants.json the empty .list
+ * containers show a subtle placeholder so the page does not look broken.
+ */
+.list:empty::after {
+  content: "уншиж байна…";
+  display: block;
+  padding: 0.75rem;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
 .item {
   display: flex; /* flex */
   align-items: center;
@@ -501,7 +513,22 @@ select {
   box-shadow: var(--shadow-sm);
 }
 
+/*
+ * .chips-wrap: used on café and pub chip lists where items should wrap
+ * onto multiple lines rather than scroll horizontally.
+ */
 .chips-wrap {
+  flex-wrap: wrap;
+  white-space: normal;
+  overflow-x: visible;
+}
+
+/*
+ * .groups .chips: chips inside the search-screen group grid must also wrap
+ * because each grid column is too narrow for horizontal scrolling.
+ * This is more specific than .chips so it correctly overrides nowrap.
+ */
+.groups .chips {
   flex-wrap: wrap;
   white-space: normal;
   overflow-x: visible;
