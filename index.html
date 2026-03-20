@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'self'; script-src 'self'; connect-src 'self';" />
 
     <title>bon délice - discover</title>
 
@@ -15,6 +15,13 @@
     <link rel="stylesheet" type="text/css"
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&amp;display=swap" />
     <link rel="stylesheet" href="discover.css" type="text/css" />
+
+    <!--
+      app.js is the ES-module entry point (CS142: module pattern).
+      type="module" gives us: deferred execution, strict mode, import/export.
+      The script is intentionally in <head> – `defer` is implicit for modules.
+    -->
+    <script type="module" src="js/app.js"></script>
   </head>
 
   <body>
@@ -154,76 +161,21 @@
 
               <div id="popular" class="block">
                 <h3>түгээмэл</h3>
-
+                <!--
+                  Static fallback items are intentionally left out.
+                  app.js populates .list on DOMContentLoaded via fetch().
+                  If JS is disabled the section gracefully shows nothing
+                  (progressive enhancement principle from CS142).
+                -->
                 <div class="list">
-                  <div class="item" id="korean">
-                    <img class="thumb" src="assets/img/yuna.png" alt="yuna рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>yuna</h4>
-                      <p class="rate"><span class="n">4.3</span> <span class="stars">★★★★★</span> <span class="c">(86)</span></p>
-                      <p class="tag">#солонгос ресторан #ази ресторан</p>
-                    </div>
-                  </div>
-
-                  <div class="item">
-                    <img class="thumb" src="assets/img/seoul.png" alt="seoul рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>seoul</h4>
-                      <p class="rate"><span class="n">4.2</span> <span class="stars">★★★★☆</span> <span class="c">(86)</span></p>
-                      <p class="tag">#солонгос ресторан #ази ресторан</p>
-                    </div>
-                  </div>
-
-                  <div class="item" id="europe">
-                    <img class="thumb" src="assets/img/new_york.png" alt="new york empire рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>new york empire</h4>
-                      <p class="rate"><span class="n">4.1</span> <span class="stars">★★★★☆</span> <span class="c">(86)</span></p>
-                      <p class="tag">#европ ресторан</p>
-                    </div>
-                  </div>
+                  <!-- populated by js/app.js -->
                 </div>
               </div>
 
               <div id="new" class="block">
                 <h3>сүүлд нэмэгдсэн</h3>
-
                 <div class="list">
-                  <div class="item">
-                    <img class="thumb" src="assets/img/yuna.png" alt="yuna рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>yuna</h4>
-                      <p class="rate"><span class="n">4.3</span> <span class="stars">★★★★★</span> <span class="c">(86)</span></p>
-                      <p class="tag">#солонгос ресторан #ази ресторан</p>
-                    </div>
-                  </div>
-
-                  <div class="item" id="italian">
-                    <img class="thumb" src="assets/img/veranda.png" alt="veranda рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>veranda</h4>
-                      <p class="rate"><span class="n">4.6</span> <span class="stars">★★★★★</span> <span class="c">(52)</span></p>
-                      <p class="tag">#итали ресторан</p>
-                    </div>
-                  </div>
-
-                  <div class="item" id="chinese">
-                    <img class="thumb" src="assets/img/tin_tan.png" alt="tian tian рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>tian tian</h4>
-                      <p class="rate"><span class="n">4.0</span> <span class="stars">★★★★☆</span> <span class="c">(40)</span></p>
-                      <p class="tag">#хятад ресторан</p>
-                    </div>
-                  </div>
-
-                  <div class="item" id="mongolian">
-                    <img class="thumb" src="assets/img/ger.png" alt="ger kitchen рестораны зураг" width="160" height="110" />
-                    <div class="meta">
-                      <h4>ger kitchen</h4>
-                      <p class="rate"><span class="n">4.2</span> <span class="stars">★★★★☆</span> <span class="c">(33)</span></p>
-                      <p class="tag">#монгол хоол</p>
-                    </div>
-                  </div>
+                  <!-- populated by js/app.js -->
                 </div>
               </div>
 
